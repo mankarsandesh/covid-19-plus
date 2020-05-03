@@ -84,22 +84,50 @@
               </div>
             </v-card-text>
           </v-flex>
-          <!-- <v-flex md6>
-              <v-card-text   style="background-color:#FFF;">
-            <div>Word of the Day</div>
-            <apexchart type="line" height="350" :options="chartOptions" :series="series"></apexchart>
-          </v-card-text>        
-          </v-flex> -->
         </v-layout>
 
         <v-layout mt-5>
-          <v-flex>
+          <v-flex md10 style="margin:0 auto;">
+            <h2 class="text-center">{{this.countryName}} Historic Cases</h2>
             <apexchart
               type="line"
-              height="350"
+              height="500"
               :options="chartOptions"
               :series="series"
             ></apexchart>
+          </v-flex>
+        </v-layout>
+        <v-layout>
+          <v-flex md8 style="margin:0 auto;">
+            <div class="divTab">
+              <h3>{{ this.countryName}} Record</h3>
+              <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                       <th class="text-left">Date</th>
+                         <th class="text-left">Country Name</th>
+                      <th class="text-left">Confirmed case</th>
+                       <th class="text-left">Active Cases</th>
+                      <th class="text-left">Deaths Cases</th>
+                      <th class="text-left">Recovered Cases</th>
+                     
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="item in countryData" :key="item.name">
+                       <td>{{ item.date | formatDate }}</td>     
+                          <td>{{ item.name }}</td>               
+                      <td style="color:orange;">{{ item.confirmed | formatNumber }}</td>
+                        <td style="color:green;">{{ item.confirmed - item.deaths - item.recovered | formatNumber}}</td>
+                      <td style="color:red;">{{ item.deaths | formatNumber }}</td>
+                      <td style="color:yellow;">{{ item.recovered | formatNumber }}</td>
+                     
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </div>
           </v-flex>
         </v-layout>
       </v-card>
@@ -126,6 +154,8 @@ export default {
       worldConfirmedCase: 0,
       worldDeaths: 0,
       worldRecovered: 0,
+
+      countryData: [],
 
       dateWise: [],
       dateData: [],
@@ -156,7 +186,7 @@ export default {
     chartOptions() {
       return {
         chart: {
-          height: 400,
+          height: 500,
           type: 'line'
         },
         dataLabels: {
@@ -221,26 +251,38 @@ export default {
           this.confirmedCountry.push(confirmedValue)
           this.deathsCountry.push(deathsValue)
           this.recoveredCountry.push(recoveredValue)
+
+          const data = {
+            name: this.countryName,
+            date: countryInfo[i].date,
+            confirmed: confirmedValue,
+            deaths: deathsValue,
+            recovered: recoveredValue
+          }
+
+         
+
+          this.countryData.push(data)
+
         }
       }
       this.series.push(
         {
-          name: 'Confirmed',
+          name: 'Confirmed Case',
           data: this.confirmedCountry
         },
         {
-          name: 'Death',
+          name: 'Death Case ',
           data: this.deathsCountry
         },
         {
-          name: 'Recoverd',
+          name: 'Recoverd Case',
           data: this.recoveredCountry
         }
       )
     },
     // Top hightest 10 Revovered Record
-    async countryChart() {
-      console.log(typeof this.dateWise)
+    async countryChart() {     
       var res = await this.$axios.$get(
         'https://pomber.github.io/covid19/timeseries.json'
       )

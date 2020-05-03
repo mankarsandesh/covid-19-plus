@@ -131,7 +131,7 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="item in highRecovered.slice(0, 10)"
+                      v-for="item in highRecovered.slice(0, 50)"
                       :key="item.name"
                     >
                       <td>{{ item.name }}</td>
