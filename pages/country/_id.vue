@@ -92,7 +92,7 @@
           </v-flex> -->
         </v-layout>
 
-        <v-layout mt-5 style="background-color:#FFF;">
+        <v-layout mt-5>
           <v-flex>
             <apexchart
               type="line"
@@ -115,18 +115,6 @@ export default {
   data() {
     return {
       countryName: this.$route.params.id,
-      highConfirmed: [],
-      confirmedData: [],
-      totalConfirmed: [],
-
-      highRecovered: [],
-      totalRecovered: [],
-      recoveredData: [],
-
-      highDeaths: [],
-      totalDeath: [],
-      deathData: [],
-
       loading: false,
       itemsPerPage: 100,
       items: [],
@@ -146,10 +134,8 @@ export default {
       deathsCountry: [],
       recoveredCountry: [],
 
-     
-
-      series: [],
-     }
+      series: []
+    }
   },
   components: {
     apexchart: VueApexCharts
@@ -171,22 +157,40 @@ export default {
       return {
         chart: {
           height: 400,
-          type: 'area'
+          type: 'line'
         },
         dataLabels: {
           enabled: false
         },
         stroke: {
-          curve: 'straight'
+          width: [5, 7, 5],
+          curve: 'straight',
+          dashArray: [0, 8, 5]
         },
         xaxis: {
           type: 'datetime',
           categories: this.dateWise
         },
         tooltip: {
+          enabled: true,
+          enabledOnSeries: undefined,
+          shared: true,
+          followCursor: true,
+          intersect: false,
+          inverseOrder: false,
+          custom: undefined,
+          fillSeriesColor: true,
+          theme: false,
+          style: {
+            fontSize: '12px',
+            fontFamily: undefined
+          },
           x: {
             format: 'dd/MM/yy HH:mm'
           }
+        },
+        grid: {
+          borderColor: '#f1f1f1'
         }
       }
     }
@@ -208,56 +212,49 @@ export default {
         'https://pomber.github.io/covid19/timeseries.json'
       )
       const countryInfo = res[this.countryName]
-      console.log(countryInfo.length)
       for (let i = 0; i < countryInfo.length; i++) {
+        if (i > 70) {
+          const confirmedValue = countryInfo[i].confirmed
+          const deathsValue = countryInfo[i].deaths
+          const recoveredValue = countryInfo[i].recovered
 
-        if(i > 50){
-        const confirmedValue = countryInfo[i].confirmed
-        const deathsValue = countryInfo[i].deaths
-        const recoveredValue = countryInfo[i].recovered
-
-        this.confirmedCountry.push(confirmedValue)
-        this.deathsCountry.push(deathsValue)
-        this.recoveredCountry.push(recoveredValue)
+          this.confirmedCountry.push(confirmedValue)
+          this.deathsCountry.push(deathsValue)
+          this.recoveredCountry.push(recoveredValue)
         }
-      }   
-        this.series.push(
+      }
+      this.series.push(
         {
           name: 'Confirmed',
           data: this.confirmedCountry
         },
         {
           name: 'Death',
-         data: this.deathsCountry
+          data: this.deathsCountry
         },
         {
           name: 'Recoverd',
           data: this.recoveredCountry
         }
-        );
-      
+      )
     },
     // Top hightest 10 Revovered Record
     async countryChart() {
-       console.log(typeof this.dateWise); 
+      console.log(typeof this.dateWise)
       var res = await this.$axios.$get(
         'https://pomber.github.io/covid19/timeseries.json'
       )
       const countryInfo = res[this.countryName]
       for (let i = 0; i < countryInfo.length; i++) {
-        if(i > 50){
-          this.dateData = countryInfo[i].date;
-          this.dateWise.push(this.dateData);
+        if (i > 70) {
+          this.dateData = countryInfo[i].date
+          this.dateWise.push(this.dateData)
         }
       }
-      console.log(this.dateWise);
+      console.log(this.dateWise)
     },
     // All Cases Couunt
     async Worldfetch() {
-      // var res = await this.$axios.$get('https://api.covid19api.com/summary')
-      // this.worldConfirmedCase = res['Global'].TotalConfirmed
-      // this.worldDeaths = res['Global'].TotalDeaths
-      // this.worldRecovered = res['Global'].TotalRecovered
       var res = await this.$axios.$get(
         'https://pomber.github.io/covid19/timeseries.json'
       )
