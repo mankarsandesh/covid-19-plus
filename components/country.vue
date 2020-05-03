@@ -131,10 +131,10 @@
                   </thead>
                   <tbody>
                     <tr
-                      v-for="item in highRecovered.slice(0, 50)"
+                      v-for="item in highRecovered.slice(0, 10)"
                       :key="item.name"
                     >
-                      <td>{{ item.name }}</td>
+                      <td>  <nuxt-link :to="'/country/' + item.name"> {{ item.name }} </nuxt-link> </td>
                       <td>{{ item.recovered | formatNumber }}</td>
                     </tr>
                   </tbody>
@@ -159,7 +159,7 @@
                       v-for="item in highDeaths.slice(0, 10)"
                       :key="item.name"
                     >
-                      <td>{{ item.name }}</td>
+                      <td>  <nuxt-link :to="'/country/' + item.name"> {{ item.name }} </nuxt-link> </td>
                       <td>{{ item.deaths | formatNumber }}</td>
                     </tr>
                   </tbody>
