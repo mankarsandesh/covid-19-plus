@@ -1,21 +1,28 @@
 <template>
   <v-app dark>
-
-    <v-app-bar app class="menu" @click="$router.push('/')"  style="width:80%;margin:0 auto;" >
+    <v-app-bar
+      app
+      class="menu"
+      @click="$router.push('/')"
+      style="width:80%;margin:0 auto;"
+    >
       Covid-19 Data
-       <v-toolbar class="toolbarMenu" >
+      <v-toolbar class="toolbarMenu">
         <v-container fluid class="navbar">
-          <v-toolbar-title>
-            
-          </v-toolbar-title>
+          <v-toolbar-title> </v-toolbar-title>
           <v-spacer></v-spacer>
           <v-toolbar-items class="hidden-xs-only text-s1 toolBar">
-             <v-btn flat v-for="item in menu" :key="item.title" :to="item.to" class="menuItem">            
-              <span>&nbsp;{{ item.title }}</span>
+            <v-btn
+              v-for="item in menu"
+              :key="item.title"
+              :to="item.to"
+              class="menuItem"
+            >
+              <span>{{ item.title }}</span>
             </v-btn>
           </v-toolbar-items>
         </v-container>
-       </v-toolbar>
+      </v-toolbar>
     </v-app-bar>
     <v-content>
       <v-container>
@@ -37,12 +44,10 @@ export default {
       fixed: false,
       menu: [
         {
-          icon: 'mdi-apps',
           title: 'Home',
           to: '/'
         },
         {
-          icon: 'mdi-chart-bubble',
           title: 'All Country',
           to: '/allCountry'
         }
@@ -56,7 +61,7 @@ export default {
 }
 </script>
 <style scoped>
-.menu{
+.menu {
   background-color: #33fddd;
 }
 </style>
