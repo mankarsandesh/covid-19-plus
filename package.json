@@ -17,7 +17,8 @@
     "numeral": "^2.0.6",
     "nuxt": "^2.0.0",
     "vue-apexcharts": "^1.5.3",
-    "vue-number-animation": "^1.0.5"
+    "vue-number-animation": "^1.0.5",
+    "vuetify": "^2.3.5"
   },
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.0.0",
